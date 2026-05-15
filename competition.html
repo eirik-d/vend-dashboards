@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competition Deep Dive</title>
+<style>
+  @font-face {
+    font-family: 'Vend Sans';
+    src: url('/Users/eirik.dysthe@m10s.io/.claude/assets/VendSans-variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Vend Sans', system-ui, -apple-system, sans-serif;
+    background: #FFFFFF;
+    color: #1F1F1F;
+    padding: 40px;
+  }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7F8385;
+    margin-bottom: 20px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+    max-width: 1600px;
+  }
+
+  .chart-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E5EA;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2px;
+  }
+
+  .chart-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1F1F1F;
+  }
+
+  .chart-subtitle {
+    font-size: 14px;
+    color: #9DA1A3;
+    margin-bottom: 16px;
+  }
+
+  .finding-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    background: #FFEBEE;
+    color: #C62828;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #5D6061;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .canvas-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 200px;
+  }
+
+  .source-line {
+    font-size: 12px;
+    color: #BBC0C2;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  /* Middle card — metric comparisons */
+  .metric-section {
+    margin-bottom: 22px;
+  }
+  .metric-section:last-child { margin-bottom: 0; }
+
+  .metric-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9DA1A3;
+    margin-bottom: 10px;
+  }
+
+  .metric-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .metric-brand {
+    font-size: 13px;
+    font-weight: 600;
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  .metric-bar-wrap {
+    flex: 1;
+    height: 22px;
+    background: #F2F2F5;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .metric-bar {
+    height: 100%;
+    border-radius: 6px;
+    border: 1.5px solid;
+  }
+
+  .metric-value {
+    font-size: 16px;
+    font-weight: 700;
+    width: 52px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .metric-ratio {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: #FFEBEE;
+    color: #C62828;
+    margin-top: 4px;
+  }
+
+  /* Highlight stat box */
+  .highlight-stat {
+    background: #FFF8F6;
+    border: 1px solid #F0DDD9;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .highlight-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1F1F1F;
+    line-height: 1;
+  }
+
+  .highlight-text {
+    font-size: 14px;
+    color: #5D6061;
+    margin-top: 4px;
+  }
+
+  .highlight-detail {
+    font-size: 12px;
+    color: #9DA1A3;
+    margin-top: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="section-label">Health metrics &middot; Competition deep dive</div>
+
+<div class="grid-3">
+
+  <!-- LEFT: Listing coverage -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <div class="chart-title">Listing coverage</div>
+      <div class="finding-badge">Low outside Oslo</div>
+    </div>
+    <div class="chart-subtitle">Where does #2 have listings? Share of total active ads</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#2FA944"></div> FINN only</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#D4D6D8"></div> Both platforms</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7A2822"></div> #2 only</div>
+    </div>
+    <div class="canvas-wrap"><canvas id="coverage"></canvas></div>
+    <div class="source-line">Source: FINN / #2 address matching, last 30 days, n = 21,041</div>
+  </div>
+
+  <!-- MIDDLE: Traffic quality -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <div class="chart-title">Traffic quality</div>
+      <div class="finding-badge">Low engagement</div>
+    </div>
+    <div class="chart-subtitle">How do visitors behave? FINN vs #2, April 2026</div>
+
+    <div class="metric-section">
+      <div class="metric-label">Pages per visit</div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#2FA944">FINN</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:100%;background:rgba(47,169,68,0.15);border-color:#2FA944"></div></div>
+        <div class="metric-value" style="color:#2FA944">33.3</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#7A2822">#2</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:5.1%;background:rgba(122,40,34,0.15);border-color:#7A2822"></div></div>
+        <div class="metric-value" style="color:#7A2822">1.7</div>
+      </div>
+      <div class="metric-ratio">FINN users view 19.6x more pages</div>
+    </div>
+
+    <div class="metric-section">
+      <div class="metric-label">Avg. visit duration</div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#2FA944">FINN</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:100%;background:rgba(47,169,68,0.15);border-color:#2FA944"></div></div>
+        <div class="metric-value" style="color:#2FA944">7:05</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#7A2822">#2</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:37%;background:rgba(122,40,34,0.15);border-color:#7A2822"></div></div>
+        <div class="metric-value" style="color:#7A2822">2:37</div>
+      </div>
+      <div class="metric-ratio">FINN visits last 2.7x longer</div>
+    </div>
+
+    <div class="metric-section">
+      <div class="metric-label">Bounce rate (lower is better)</div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#2FA944">FINN</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:37.7%;background:rgba(47,169,68,0.15);border-color:#2FA944"></div></div>
+        <div class="metric-value" style="color:#2FA944">22.8%</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-brand" style="color:#7A2822">#2</div>
+        <div class="metric-bar-wrap"><div class="metric-bar" style="width:100%;background:rgba(122,40,34,0.15);border-color:#7A2822"></div></div>
+        <div class="metric-value" style="color:#7A2822">60.5%</div>
+      </div>
+      <div class="metric-ratio">#2 bounce rate 2.7x higher</div>
+    </div>
+
+    <div class="source-line">Source: SimilarWeb, RE object pages, excl. app</div>
+  </div>
+
+  <!-- RIGHT: Pre-listing rate -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <div class="chart-title">Pre-listing on #2</div>
+      <div class="finding-badge">~22h window</div>
+    </div>
+    <div class="chart-subtitle">How often do listings appear on #2 before FINN?</div>
+    <div style="display:flex;gap:12px;margin-bottom:16px">
+      <div class="highlight-stat" style="flex:1;margin-bottom:0">
+        <div class="highlight-number">36%</div>
+        <div class="highlight-text">of #2 listings are delayed before reaching FINN</div>
+        <div class="highlight-detail">3,010 of 8,334 listings</div>
+      </div>
+      <div class="highlight-stat" style="flex:1;margin-bottom:0">
+        <div class="highlight-number">~22h</div>
+        <div class="highlight-text">average delay before FINN publish</div>
+        <div class="highlight-detail">Median across delayed listings</div>
+      </div>
+    </div>
+    <div class="metric-label">Pre-listing rate by region</div>
+    <div class="canvas-wrap"><canvas id="prelist"></canvas></div>
+    <div class="source-line">Source: FINN / #2 address matching, last 30 days</div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+Chart.defaults.devicePixelRatio = window.devicePixelRatio * 2;
+
+const BROWN = '#7A2822';
+const GREEN = '#2FA944';
+const GREY = '#D4D6D8';
+
+const chartFont = { family: "'Vend Sans', system-ui" };
+const tooltipStyle = {
+  backgroundColor: '#1F1F1F',
+  titleFont: { ...chartFont, size: 13, weight: '600' },
+  bodyFont: { ...chartFont, size: 12 },
+  padding: 10,
+  cornerRadius: 6,
+  displayColors: true,
+  boxWidth: 8,
+  boxHeight: 8,
+  boxPadding: 4
+};
+
+/* ── LEFT: Coverage stacked bar ── */
+new Chart(document.getElementById('coverage'), {
+  type: 'bar',
+  data: {
+    labels: ['Norge','Oslo','Vestfold','Akershus','Agder','Vestland','Østfold','Buskerud','Innlandet','Trøndelag','Nordland'],
+    datasets: [
+      { label: 'FINN only',      data: [60.4,47.5,52.4,56.1,51.2,53.9,63.3,69.0,79.7,83.5,88.9], backgroundColor: 'rgba(47,169,68,0.15)', borderColor: GREEN, borderWidth: 1 },
+      { label: 'Both platforms',  data: [33.4,46.0,41.0,37.8,37.2,35.1,31.5,25.2,17.2,12.8,8.0],  backgroundColor: 'rgba(212,214,216,0.3)', borderColor: '#B0B3B5', borderWidth: 1 },
+      { label: '#2 only',        data: [6.2,6.5,6.6,6.1,11.6,11.1,5.3,5.8,3.1,3.7,3.1],           backgroundColor: 'rgba(122,40,34,0.15)', borderColor: BROWN, borderWidth: 1 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        ...tooltipStyle,
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.x.toFixed(1) + '%' }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        max: 100,
+        grid: { display: false },
+        ticks: { font: { ...chartFont, size: 12 }, color: '#9DA1A3', callback: v => v + '%' },
+        border: { display: false }
+      },
+      y: {
+        stacked: true,
+        grid: { display: false },
+        ticks: { font: { ...chartFont, size: 13 }, color: '#5D6061' },
+        border: { display: false }
+      }
+    },
+    elements: { bar: { borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 4 }, borderSkipped: false } }
+  }
+});
+
+/* ── RIGHT: Pre-listing rate by region ── */
+const prelistLabels = ['Buskerud','Akershus','Vestfold','Østfold','Møre og R.','Nordland','Telemark','Troms','Innlandet','Trøndelag','Oslo','Agder','Rogaland','Vestland'];
+const prelistPct =    [61, 57, 57, 56, 54, 54, 51, 51, 50, 45, 42, 31, 25, 21];
+
+new Chart(document.getElementById('prelist'), {
+  type: 'bar',
+  data: {
+    labels: prelistLabels,
+    datasets: [{
+      label: 'Pre-listed on #2',
+      data: prelistPct,
+      backgroundColor: 'rgba(122,40,34,0.15)',
+      borderColor: BROWN,
+      borderWidth: 1,
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        ...tooltipStyle,
+        callbacks: {
+          label: ctx => ' ' + ctx.parsed.x + '% appear on #2 before FINN'
+        }
+      }
+    },
+    scales: {
+      x: {
+        max: 100,
+        grid: { color: '#F2F2F5', lineWidth: 1 },
+        ticks: { font: { ...chartFont, size: 12 }, color: '#9DA1A3', callback: v => v + '%' },
+        border: { display: false }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { font: { ...chartFont, size: 13 }, color: '#5D6061' },
+        border: { display: false }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
