@@ -332,10 +332,25 @@ const tooltipStyle = {
 };
 
 /* ── LEFT: Coverage stacked bar ── */
+const coverageLabels = ['Norge','Oslo','Vestfold','Akershus','Agder','Vestland','Østfold','Buskerud','Innlandet','Trøndelag','Nordland'];
+const coverageCounts = {
+  Norge:     { finnOnly: 12707, both: 7026, hjemOnly: 1308 },
+  Oslo:      { finnOnly: 1363, both: 1384, hjemOnly: 192 },
+  Vestfold:  { finnOnly: 788, both: 624, hjemOnly: 100 },
+  Akershus:  { finnOnly: 1826, both: 1252, hjemOnly: 201 },
+  Agder:     { finnOnly: 614, both: 457, hjemOnly: 141 },
+  Vestland:  { finnOnly: 637, both: 416, hjemOnly: 131 },
+  Østfold:   { finnOnly: 1110, both: 561, hjemOnly: 93 },
+  Buskerud:  { finnOnly: 880, both: 339, hjemOnly: 75 },
+  Innlandet: { finnOnly: 1201, both: 261, hjemOnly: 47 },
+  Trøndelag: { finnOnly: 1907, both: 299, hjemOnly: 85 },
+  Nordland:  { finnOnly: 901, both: 82, hjemOnly: 31 }
+};
+
 new Chart(document.getElementById('coverage'), {
   type: 'bar',
   data: {
-    labels: ['Norge','Oslo','Vestfold','Akershus','Agder','Vestland','Østfold','Buskerud','Innlandet','Trøndelag','Nordland'],
+    labels: coverageLabels,
     datasets: [
       { label: 'FINN only',      data: [60.4,47.5,52.4,56.1,51.2,53.9,63.3,69.0,79.7,83.5,88.9], backgroundColor: 'rgba(47,169,68,0.15)', borderColor: GREEN, borderWidth: 1 },
       { label: 'Both platforms',  data: [33.4,46.0,41.0,37.8,37.2,35.1,31.5,25.2,17.2,12.8,8.0],  backgroundColor: 'rgba(212,214,216,0.3)', borderColor: '#B0B3B5', borderWidth: 1 },
@@ -350,7 +365,16 @@ new Chart(document.getElementById('coverage'), {
       legend: { display: false },
       tooltip: {
         ...tooltipStyle,
-        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.x.toFixed(1) + '%' }
+        callbacks: {
+          label: ctx => {
+            const region = ctx.label;
+            const c = coverageCounts[region];
+            const pct = ctx.parsed.x.toFixed(1) + '%';
+            const key = ctx.datasetIndex === 0 ? 'finnOnly' : ctx.datasetIndex === 1 ? 'both' : 'hjemOnly';
+            const count = c ? c[key].toLocaleString('en-US') : '';
+            return ' ' + ctx.dataset.label + ': ' + pct + '  (' + count + ' listings)';
+          }
+        }
       }
     },
     scales: {
