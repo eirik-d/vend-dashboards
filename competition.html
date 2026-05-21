@@ -230,7 +230,7 @@
       <div class="legend-item"><div class="legend-dot" style="background:#7A2822"></div> #2 only</div>
     </div>
     <div class="canvas-wrap"><canvas id="coverage"></canvas></div>
-    <div class="source-line">Source: FINN / #2 address matching, last 30 days, n = 21,041</div>
+    <div class="source-line">Source: FINN / #2 address matching, last 30 days, n = 19,977</div>
   </div>
 
   <!-- MIDDLE: Traffic quality -->
@@ -339,17 +339,17 @@ const tooltipStyle = {
 /* ── LEFT: Coverage stacked bar ── */
 const coverageLabels = ['Norge','Oslo','Vestfold','Akershus','Agder','Vestland','Østfold','Buskerud','Innlandet','Trøndelag','Nordland'];
 const coverageCounts = {
-  Norge:     { finnOnly: 12707, both: 7026, hjemOnly: 1308 },
-  Oslo:      { finnOnly: 1363, both: 1384, hjemOnly: 192 },
-  Vestfold:  { finnOnly: 788, both: 624, hjemOnly: 100 },
-  Akershus:  { finnOnly: 1826, both: 1252, hjemOnly: 201 },
-  Agder:     { finnOnly: 614, both: 457, hjemOnly: 141 },
-  Vestland:  { finnOnly: 637, both: 416, hjemOnly: 131 },
-  Østfold:   { finnOnly: 1110, both: 561, hjemOnly: 93 },
-  Buskerud:  { finnOnly: 880, both: 339, hjemOnly: 75 },
-  Innlandet: { finnOnly: 1201, both: 261, hjemOnly: 47 },
-  Trøndelag: { finnOnly: 1907, both: 299, hjemOnly: 85 },
-  Nordland:  { finnOnly: 901, both: 82, hjemOnly: 31 }
+  Norge:     { finnOnly: 12707, both: 7026, hjemOnly: 244 },
+  Oslo:      { finnOnly: 1363, both: 1384, hjemOnly: 38 },
+  Vestfold:  { finnOnly: 788, both: 624, hjemOnly: 22 },
+  Akershus:  { finnOnly: 1826, both: 1252, hjemOnly: 31 },
+  Agder:     { finnOnly: 614, both: 457, hjemOnly: 19 },
+  Vestland:  { finnOnly: 637, both: 416, hjemOnly: 44 },
+  Østfold:   { finnOnly: 1110, both: 561, hjemOnly: 12 },
+  Buskerud:  { finnOnly: 880, both: 339, hjemOnly: 12 },
+  Innlandet: { finnOnly: 1201, both: 261, hjemOnly: 11 },
+  Trøndelag: { finnOnly: 1907, both: 299, hjemOnly: 8 },
+  Nordland:  { finnOnly: 901, both: 82, hjemOnly: 1 }
 };
 
 new Chart(document.getElementById('coverage'), {
@@ -357,9 +357,9 @@ new Chart(document.getElementById('coverage'), {
   data: {
     labels: coverageLabels,
     datasets: [
-      { label: 'FINN only',      data: [60.4,47.5,52.4,56.1,51.2,53.9,63.3,69.0,79.7,83.5,88.9], backgroundColor: 'rgba(47,169,68,0.15)', borderColor: GREEN, borderWidth: 1 },
-      { label: 'Both platforms',  data: [33.4,46.0,41.0,37.8,37.2,35.1,31.5,25.2,17.2,12.8,8.0],  backgroundColor: 'rgba(212,214,216,0.3)', borderColor: '#B0B3B5', borderWidth: 1 },
-      { label: '#2 only',        data: [6.2,6.5,6.6,6.1,11.6,11.1,5.3,5.8,3.1,3.7,3.1],           backgroundColor: 'rgba(122,40,34,0.15)', borderColor: BROWN, borderWidth: 1 }
+      { label: 'FINN only',      data: [63.6,48.9,55.0,58.7,56.3,58.1,66.0,71.5,81.5,86.1,91.6], backgroundColor: 'rgba(47,169,68,0.15)', borderColor: GREEN, borderWidth: 1 },
+      { label: 'Both platforms',  data: [35.2,49.7,43.5,40.3,41.9,37.9,33.3,27.5,17.7,13.5,8.3],  backgroundColor: 'rgba(212,214,216,0.3)', borderColor: '#B0B3B5', borderWidth: 1 },
+      { label: '#2 only',        data: [1.2,1.4,1.5,1.0,1.7,4.0,0.7,1.0,0.7,0.4,0.1],           backgroundColor: 'rgba(122,40,34,0.15)', borderColor: BROWN, borderWidth: 1 }
     ]
   },
   options: {
