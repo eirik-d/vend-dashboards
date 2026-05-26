@@ -25,16 +25,16 @@
   .cards.single { grid-template-columns: 1fr; }
   .card { background: white; border-radius: 16px; padding: 20px; border: 1px solid #e8e8e8; text-align: center; position: relative; overflow: hidden; }
   .card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-  .card.peak::before { background: #D32F2F; }
+  .card.peak::before { background: #2FA044; }
   .card.today::before { background: #0063FB; }
-  .card.is-peak-today { background: linear-gradient(135deg, #FFF5F5, #FFF0F0); border-color: #D32F2F40; }
-  .card.is-peak-today::before { background: linear-gradient(90deg, #D32F2F, #FF6B6B); }
+  .card.is-peak-today { background: linear-gradient(135deg, #F2FAF4, #E8F5EB); border-color: #2FA04440; }
+  .card.is-peak-today::before { background: linear-gradient(90deg, #2FA044, #5BC46E); }
   .card-label { font-size: 11px; font-weight: 700; color: #767677; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .card.is-peak-today .card-label { color: #D32F2F; }
+  .card.is-peak-today .card-label { color: #2FA044; }
   .card-value { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
-  .card.peak .card-value { color: #D32F2F; }
+  .card.peak .card-value { color: #2FA044; }
   .card.today .card-value { color: #0063FB; }
-  .card.is-peak-today .card-value { color: #D32F2F; font-size: 38px; }
+  .card.is-peak-today .card-value { color: #2FA044; font-size: 38px; }
   .card-date { font-size: 12px; color: #767677; font-weight: 500; }
 
   .chart-wrap { background: white; border-radius: 16px; padding: 24px; border: 1px solid #e8e8e8; }
@@ -102,7 +102,7 @@ function makeChart(canvasId, dates, values, peakDate, peakVal, isPeakToday, colo
       type: "point",
       xValue: peakDate,
       yValue: peakVal,
-      backgroundColor: "#D32F2F",
+      backgroundColor: "#2FA044",
       borderColor: "white",
       borderWidth: 2,
       radius: 6,
@@ -111,7 +111,7 @@ function makeChart(canvasId, dates, values, peakDate, peakVal, isPeakToday, colo
       type: "line",
       yMin: peakVal,
       yMax: peakVal,
-      borderColor: "#D32F2F55",
+      borderColor: "#2FA04455",
       borderWidth: 1,
       borderDash: [6, 4],
       label: {
@@ -121,7 +121,7 @@ function makeChart(canvasId, dates, values, peakDate, peakVal, isPeakToday, colo
           : "All-time high: " + peakVal.toLocaleString("nb-NO") + " (" + peakDate + ")",
         position: "start",
         backgroundColor: "rgba(255,255,255,0.9)",
-        color: "#D32F2F",
+        color: "#2FA044",
         font: { family: "FINN Type, Inter, system-ui", size: 11, weight: "bold" },
         padding: { top: 3, bottom: 3, left: 6, right: 6 },
         borderRadius: 3,
